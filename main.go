@@ -104,11 +104,6 @@ func update(fenChan <-chan string, myWindow fyne.Window) {
 			NewFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
 		}
 
-		if !isValidFEN(NewFen) {
-			log.Printf("Invalid FEN string: %s", NewFen)
-			NewFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
-		}
-
 		chessboard := container.NewGridWithColumns(8)
 
 		addPiece := func(imagePath string, square *canvas.Rectangle) fyne.CanvasObject {
@@ -174,26 +169,6 @@ func update(fenChan <-chan string, myWindow fyne.Window) {
 		myWindow.SetContent(chessboard)
 		myWindow.Resize(fyne.NewSize(8*squareSize, 8*squareSize))
 	}
-}
-
-func isValidFEN(fen string) bool {
-	parts := strings.Split(fen, " ")
-	if len(parts) != 6 {
-		return false
-	}
-	boardPart := parts[0]
-	fenRows := strings.Split(boardPart, "/")
-	if len(fenRows) != 8 {
-		return false
-	}
-	for _, row := range fenRows {
-		for _, char := range row {
-			if !(char >= '1' && char <= '8' || strings.ContainsRune("rnbqkpRNBQKP", char)) {
-				return false
-			}
-		}
-	}
-	return true
 }
 
 func main() {
